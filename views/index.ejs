@@ -16,14 +16,28 @@
         <input type="text" id="zipInput" name="zip">
   
         <label for="countryInput">Country Code:</label>
-        <input type="number" id="countryInput" name="country">
+        <input type="text" id="countryInput" name="country">
   
         <label for="submit">Submit:</label>
         <input id="get" type="submit" value="GET" formaction="/result">
 
       </form>
 
+    <div>
+        <% if (locals.result) { %>
+            <h2>Result</h2>
+            <p>Location: <%= country %></p>
+            <p>Latitude: <%= lat %></p>
+            <p>Longitude: <%= lon %></p>
+       <% } else { %>
 
+      <% } %>
+
+
+
+
+
+    </div>
 
 
 
