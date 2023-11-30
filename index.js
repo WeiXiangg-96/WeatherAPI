@@ -19,11 +19,10 @@ app.get("/", (req,res) => {
 app.post("/result", async (req,res) => {
     try {
         const result = await axios.get(Location_URL + `zip=${req.body.zip},${req.body.country}&appid=${apiToken}`);
-        console.log(req.body.zip);
-        console.log(req.body.country);
-        res.render("index.ejs", {country: result.country, lat: result.lat, lon: result.lon});
+        console.log(result.data);
+        res.render("index.ejs", {geocode: result.data});
     } catch (error) {
-        console.log("Error");
+        console.log(error.response.data);
         res.status(500);
     }
 });
