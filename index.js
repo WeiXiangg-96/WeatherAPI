@@ -4,8 +4,8 @@ import bodyParser from "body-parser";
 
 const app = express();
 const port = 3000;
-const Weather_URL = ""; // weather api
-const Location_URL = "http://api.openweathermap.org/geo/1.0/zip?" // location api
+const weather_URL = "http://api.openweathermap.org/data/2.5/weather?"; // weather api
+const location_URL = "http://api.openweathermap.org/geo/1.0/zip?"; // geocode api
 const apiToken = "7d64ca693d79493070526648e07aba37";
 
 
@@ -16,15 +16,30 @@ app.get("/", (req,res) => {
     res.render("index.ejs");
 });
 
-app.post("/result", async (req,res) => {
+app.post("/weather", async (req,res) => {
     try {
-        const result = await axios.get(Location_URL + `zip=${req.body.zip},${req.body.country}&appid=${apiToken}`);
-        console.log(result.data);
-        res.render("index.ejs", {geocode: result.data});
+        const response = await axios.get(weather_URL + `lat=${req.body.latitude}&lon=${req.body.longitude}&appid=${apiToken}&units=metric`);
+        console.log(response.data.weather[0].main);
+        res.render("index.ejs", { weather: response.data});
+
     } catch (error) {
-        console.log(error.response.data);
+        console.log(`Error`, error.message);
         res.status(500);
     }
+
+});
+
+app.post("/geocode", async (req,res) => {
+    try {
+        const response2 = await axios.get(location_URL + `zip=${req.body.zip},${req.body.country}&appid=${apiToken}`);
+        console.log(response2.data);
+        res.render("index.ejs", { cordinates: response2.data});
+
+    } catch (error) {
+        console.log(`Error`, error.message);
+        res.status(500);
+    }
+
 });
 
 app.listen(port, () => {

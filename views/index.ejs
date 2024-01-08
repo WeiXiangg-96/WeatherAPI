@@ -9,29 +9,76 @@
 
 <body>
     <h1>Weather Forcast</h1>
-    <h2>Please key in your location</h2>
 
-    <form id="myForm" method="post">
-        <label for="zipInput">Zip Code:</label>
-        <input type="text" id="zipInput" name="zip">
+
+    <div>
+
+        <h3>Please key in your location</h3>
+
+        <form id="myForm" method="post">
+        <label for="latitudeInput">latitude:</label>
+        <input type="text" id="latitudeInput" name="latitude" required>
   
-        <label for="countryInput">Country Code:</label>
-        <input type="text" id="countryInput" name="country">
+        <label for="longitudeInput">Longitude:</label>
+        <input type="text" id="longitudeInput" name="longitude" required>
   
         <label for="submit">Submit:</label>
-        <input id="get" type="submit" value="GET" formaction="/result">
+        <input id="get" type="submit" value="GET" formaction="/weather">
 
       </form>
 
-    <div>
-        <% if (locals.geocode) { %>  
-            <h2>Result</h2>
-            <p>Location: <%= geocode.name %></p>
-            <p>Latitude: <%= geocode.lat %></p>
-            <p>Longitude: <%= geocode.lon %></p>
-        <% } else { %> 
+        <div>
+        <% if (locals.weather) { %>  
+            <h3>Result</h3>
+                <div class="temperature"> 
+                    <p>Current temperature: <%= weather.main.temp %></p>
+                    <p>Min temperature: <%= weather.main.temp_min %></p>
+                    <p>Max temperature: <%= weather.main.temp_max %></p>
+                </div>
+                <div class="weather">
+                    <p>Weather: <%= weather.weather[0].main %></p>
+                    <img src= "https://openweathermap.org/img/wn/<%= weather.weather[0].icon %>@2x.png" >
+                </div>
+            
+
+            <% } else { %> 
             <P>Waiting for data...</P>
-        <% } %>
+            <% } %>
+
+        </div>
+
+    </div>
+
+    <div>
+
+        <h3>Find out your cordinates!</h3>
+
+        <div>
+            <form id="myForm" method="post">
+            <label for="zipInput">Zip Code:</label>
+            <input type="text" id="zipInput" name="zip" required size="6">
+            <br>
+            <label for="countryInput">Country code:</label>
+            <input type="text" id="countryInput" name="country" required size="2">
+            <br>
+            <label for="submit">Submit:</label>
+            <input id="get" type="submit" value="GET" formaction="/geocode">
+    
+          </form>
+    
+            <div>
+            <% if (locals.cordinates) { %>  
+                <h2>Result</h2>
+                    <div class="cordinates"> 
+                        <p>Country: <%= cordinates.name %></p>
+                        <p>Latitude: <%= cordinates.lat %></p>
+                        <p>Longitude: <%= cordinates.lon %></p>
+                    </div>
+                <% } else { %> 
+
+                <% } %>
+    
+            </div>
 
     </div>
 
