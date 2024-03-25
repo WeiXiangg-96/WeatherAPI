@@ -17,8 +17,11 @@ app.get("/", (req,res) => {
 });
 
 app.post("/weather", async (req,res) => {
+    const latitude = req.body.latitude;
+    const longitude = req.body.longitude;
+
     try {
-        const response = await axios.get(weather_URL + `lat=${req.body.latitude}&lon=${req.body.longitude}&appid=${apiToken}&units=metric`);
+        const response = await axios.get(weather_URL + `lat=${latitude}&lon=${longitude}&appid=${apiToken}&units=metric`);
         console.log(response.data.weather[0].main);
         res.render("index.ejs", { weather: response.data});
 
@@ -30,8 +33,11 @@ app.post("/weather", async (req,res) => {
 });
 
 app.post("/geocode", async (req,res) => {
+    const zip = req.body.zip;
+    const country = req.body.country;
+
     try {
-        const response2 = await axios.get(location_URL + `zip=${req.body.zip},${req.body.country}&appid=${apiToken}`);
+        const response2 = await axios.get(location_URL + `zip=${zip},${country}&appid=${apiToken}`);
         console.log(response2.data);
         res.render("index.ejs", { cordinates: response2.data});
 
